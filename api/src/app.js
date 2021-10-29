@@ -1,6 +1,7 @@
 require("dotenv").config({ path: "../.env" });
 const express = require("express");
 const router = require("./routes");
+const verifyToken = require("./utilities/verifyToken");
 const apiPort = process.env.REACT_APP_SERVER_PORT || "";
 
 const app = express();
@@ -38,11 +39,10 @@ app.use((req, res, next) => {
   const t = token.substring(7);
   try {
     const verifiedToken = verifyToken(t);
-    req.headers.facilityId = verifiedToken.facilityId;
-    req.headers.facilityEmail = verifiedToken.facilityEmail;
-    req.headers.facilityPermissions = `${verifiedToken.facilityPermissions}`;
+    req.headers.UserID = verifiedToken.UserID;
+    req.headers.Email = verifiedToken.Email;
+    req.headers.RoleID = verifiedToken.RoleID;
   } catch (err) {
-    rollbar.log(`Token verification Error: ${err.toString()}`);
     res.status(401).send(err.toString());
     return;
   }

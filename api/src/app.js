@@ -25,16 +25,8 @@ app.use((req, res, next) => {
   }
 });
 
-// come back and swap what the token encodes
 app.use((req, res, next) => {
-  if (
-    req.originalUrl === "/login" ||
-    req.originalUrl === "/assignments" ||
-    req.originalUrl === "/assignments/submit" ||
-    req.originalUrl === "/courses" ||
-    req.originalUrl === "/courses/register" ||
-    req.originalUrl === "/users"
-  ) {
+  if (req.originalUrl === "/login" || req.originalUrl === "/users/create") {
     next();
     return;
   }

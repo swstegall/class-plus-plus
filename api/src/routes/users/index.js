@@ -6,7 +6,7 @@ const update = require("./update");
 let router = express.Router();
 
 router.get("/", read);
-router.post("/", create);
+router.post("/create", create);
 router.put("/", update);
 
 module.exports = router;

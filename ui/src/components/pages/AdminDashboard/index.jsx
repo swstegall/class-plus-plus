@@ -97,7 +97,7 @@ const AdminDashboard = (props) => {
     if (User.Loaded && !Users.Loaded) {
       props.dispatch(UsersActions.Cycle(User.Token));
     }
-  }, [User]);
+  }, [User, Users.Loaded, props]);
 
   return (
     <>

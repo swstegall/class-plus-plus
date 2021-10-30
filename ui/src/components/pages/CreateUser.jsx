@@ -26,6 +26,11 @@ const gradeOptions = [
   { name: "Twelfth Grade", value: "12" },
 ];
 
+const roleOptions = [
+  { name: "Student", value: 0 },
+  { name: "Teacher", value: 1 },
+];
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -52,6 +57,7 @@ const initialValues = {
   firstName: null,
   lastName: null,
   grade: null,
+  role: null,
 };
 
 const validationSchema = yup.object({
@@ -60,6 +66,7 @@ const validationSchema = yup.object({
   firstName: yup.string().required().nullable(),
   lastName: yup.string().required().nullable(),
   grade: yup.string().required().nullable(),
+  role: yup.number().required().nullable(),
 });
 
 const CreateUser = (props) => {
@@ -72,7 +79,8 @@ const CreateUser = (props) => {
         values.password,
         values.firstName,
         values.lastName,
-        values.grade
+        values.grade,
+        values.role
       )
     );
   };
@@ -173,6 +181,27 @@ const CreateUser = (props) => {
                       </div>
                       <div className={"row pt-2"}>
                         <div className={"col"}>
+                          <Select
+                            variant={"outlined"}
+                            label={"Role"}
+                            displayEmpty
+                            name="role"
+                            required
+                          >
+                            <MenuItem value={null}>Select a Role</MenuItem>
+                            {roleOptions.map((roleOption) => (
+                              <MenuItem
+                                value={roleOption.value}
+                                key={`create-user-role-select-${roleOption.name}-${roleOption.value}`}
+                              >
+                                {roleOption.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </div>
+                      </div>
+                      <div className={"row pt-2"}>
+                        <div className={"col"}>
                           <FormSpy
                             subscription={{
                               values: true,
@@ -190,6 +219,10 @@ const CreateUser = (props) => {
                                 disabled={
                                   values.email === null ||
                                   values.password === null ||
+                                  values.firstName === null ||
+                                  values.lastName === null ||
+                                  values.grade === null ||
+                                  values.role === null ||
                                   submitting ||
                                   pristine
                                 }

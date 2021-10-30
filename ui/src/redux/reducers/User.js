@@ -108,7 +108,7 @@ const Login = (email, password) => async (dispatch) => {
 };
 
 const Register =
-  (email, password, firstName, lastName, grade) => async (dispatch) => {
+  (email, password, firstName, lastName, grade, role) => async (dispatch) => {
     dispatch(AppActions.SetLoading(true));
     try {
       await axios({
@@ -124,6 +124,7 @@ const Register =
           FirstName: firstName,
           LastName: lastName,
           Grade: grade,
+          RoleID: role,
         },
       });
       dispatch(

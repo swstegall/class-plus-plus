@@ -72,12 +72,18 @@ const App = () => {
         </Alert>
       </Snackbar>
       {loggedIn ? (
-        <Switch>
-          <Route key={"admin_dashboard"} path={"/admin_dashboard"}>
-            <AdminDashboard dispatch={dispatch} />
-          </Route>
-          <Redirect to={"/admin_dashboard"} />
-        </Switch>
+        User.RoleID === 2 ? (
+          <Switch>
+            <Route key={"admin_dashboard"} path={"/admin_dashboard"}>
+              <AdminDashboard dispatch={dispatch} />
+            </Route>
+            <Redirect to={"/admin_dashboard"} />
+          </Switch>
+        ) : User.RoleID === 1 ? (
+          <>TeacherPage</>
+        ) : (
+          <>StudentPage</>
+        )
       ) : (
         <Switch>
           <Route key={"login"} path={"/login"}>

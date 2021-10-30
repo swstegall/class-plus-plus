@@ -11,7 +11,7 @@ const create = async (req, res) => {
   });
   await models.user.create({
     ID: id,
-    RoleID: 0,
+    RoleID: req.body.RoleID,
     FirstName: req.body.FirstName,
     LastName: req.body.LastName,
     Grade: req.body.Grade,

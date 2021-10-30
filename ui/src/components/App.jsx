@@ -10,6 +10,7 @@ import { NotificationActions } from "../redux/reducers/Notification";
 import { LinearProgress } from "@mui/material";
 import { UserActions } from "../redux/reducers/User";
 import CreateUser from "./pages/CreateUser";
+import CustomAppBar from "./individual/CustomAppBar";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -73,14 +74,17 @@ const App = () => {
       </Snackbar>
       {loggedIn ? (
         User.RoleID === 2 ? (
-          <div className={"container-fluid"} style={{ width: "75vw" }}>
-            <Switch>
-              <Route key={"admin_dashboard"} path={"/admin_dashboard"}>
-                <AdminDashboard dispatch={dispatch} />
-              </Route>
-              <Redirect to={"/admin_dashboard"} />
-            </Switch>
-          </div>
+          <>
+            <CustomAppBar />
+            <div className={"container-fluid"} style={{ width: "75vw" }}>
+              <Switch>
+                <Route key={"admin_dashboard"} path={"/admin_dashboard"}>
+                  <AdminDashboard dispatch={dispatch} />
+                </Route>
+                <Redirect to={"/admin_dashboard"} />
+              </Switch>
+            </div>
+          </>
         ) : User.RoleID === 1 ? (
           <>TeacherPage</>
         ) : (

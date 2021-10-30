@@ -1,5 +1,29 @@
+const verifyToken = require("../../utilities/verifyToken");
+const models = require("../../models");
+const uuidv4 = require("../../utilities/uuidv4");
+
 const register = async (req, res) => {
-  res.status(200).json({ success: true, message: "courses/register stub." });
+  try {
+    const tokenObject = verifyToken(req.headers.authorization.substring(7));
+    if (tokenObject.RoleID === 0) {
+      const id = uuidv4();
+      await models.courseRegistration.create({
+        ID: id,
+        CourseID: req.body.CourseID,
+        UserID: tokenObject.UserID,
+      });
+      const courses = await models.courseRegistration.findAll({
+        where: { UserID: tokenObject.UserID },
+      });
+      res.status(200).json(courses);
+    } else {
+      res
+        .status(400)
+        .json({ success: false, message: "You are not a student." });
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, message: error });
+  }
 };
 
 module.exports = register;

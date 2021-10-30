@@ -22,11 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       CreatedByUserID: {
         field: "CreatedByUserID",
         type: DataTypes.STRING,
-      }
+      },
     },
     {
       timestamps: false,
     }
   );
+  // course.associate = (models) => {
+  //   models.course.hasMany(models.courseRegistration, {
+  //     foreignKey: {
+  //       name: "ID",
+  //     },
+  //   });
+  // };
   return course;
 };

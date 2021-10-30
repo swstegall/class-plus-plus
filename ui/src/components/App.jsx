@@ -12,6 +12,7 @@ import { UserActions } from "../redux/reducers/User";
 import CreateUser from "./pages/CreateUser";
 import CustomAppBar from "./individual/CustomAppBar";
 import StudentDashboard from "./pages/StudentDashboard";
+import TeacherDashboard from "./pages/TeacherDashboard";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -87,7 +88,12 @@ const App = () => {
             </div>
           </>
         ) : User.RoleID === 1 ? (
-          <>TeacherPage</>
+          <>
+            <CustomAppBar />
+            <div className={"container-fluid"} style={{ width: "75vw" }}>
+              <TeacherDashboard />
+            </div>
+          </>
         ) : (
           <>
             <CustomAppBar />

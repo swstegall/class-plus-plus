@@ -14,7 +14,9 @@ const create = async (req, res) => {
         Description: req.body.Description,
         CreatedByUserID: tokenObject.UserID,
       });
-      const courses = await models.course.findAll();
+      const courses = await models.course.findAll({
+        where: { CreatedByUserID: tokenObject.UserID },
+      });
       res.status(200).json(courses);
     } else {
       res

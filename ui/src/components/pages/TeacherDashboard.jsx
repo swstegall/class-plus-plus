@@ -3,24 +3,26 @@ import TablePageCard from "../individual/TablePageCard";
 import { useSelector } from "react-redux";
 import { UsersActions } from "../../redux/reducers/Users";
 import { Button } from "@mui/material";
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
+// Content
+// Edit
+// Delete
+// Archive
 const columns = [
   {
     name: "id",
-    label: "course ID",
+    label: "ID",
   },
   {
-    name: "course",
+    name: "title",
     label: "Course Name",
   },
   {
     name: "students",
     label: "Students",
   },
-  //{
-    //name: "userID",
-    //label: "User ID",
-  //},
   {
     name: "actions",
     label: "Action",
@@ -48,38 +50,33 @@ const TeacherDashboard = (props) => {
     Active: [
       {
         ID: "test",
-        Label: "test",
+        CourseName: "test",
         Title: "test",
         Description: "test",
-        CreatedByUserID: "test",
       },
       {
         ID: "test",
-        Label: "test",
+        CourseName: "test",
         Title: "test",
         Description: "test",
-        CreatedByUserID: "test",
       },
       {
         ID: "test",
-        Label: "test",
+        CourseName: "test",
         Title: "test",
         Description: "test",
-        CreatedByUserID: "test",
       },
       {
         ID: "test",
-        Label: "test",
+        CourseName: "test",
         Title: "test",
         Description: "test",
-        CreatedByUserID: "test",
       },
       {
         ID: "test",
-        Label: "test",
+        CourseName: "test",
         Title: "test",
         Description: "test",
-        CreatedByUserID: "test",
       },
     ],
   };
@@ -90,9 +87,22 @@ const TeacherDashboard = (props) => {
     return {
       id: course.ID,
       label: course.Label,
-      title: course.Title,
+      title: "test",
       students: 9,
-      actions: <Button variant="contained" size="meduium">Class Content</Button>,
+      actions: (
+        <ButtonGroup variant="contained" size="meduium" aria-label="split button"
+        onClick={() => {
+          setEditUserDialogOpen(true);
+          setUserID(user.ID);
+        }}
+      >
+        Edit
+          <Button>
+          Class Content
+        </Button>
+        <ArrowDropDownIcon/>
+        </ButtonGroup>
+      ),
     };
   });
 
@@ -105,7 +115,10 @@ const TeacherDashboard = (props) => {
   return (
     <>
       {render && (
-        <TablePageCard title={"Teacher Dashboard"} table={{ columns, data, options }} />
+        <TablePageCard
+          title={"Teacher Dashboard"}
+          table={{ columns, data, options }}
+        />
       )}
     </>
   );

@@ -14,12 +14,8 @@ const columns = [
     label: "Course Name",
   },
   {
-    name: "title",
-    label: "Title",
-  },
-  {
-    name: "description",
-    label: "Description",
+    name: "students",
+    label: "Students",
   },
   //{
     //name: "userID",
@@ -95,9 +91,8 @@ const TeacherDashboard = (props) => {
       id: course.ID,
       label: course.Label,
       title: course.Title,
-      description: course.Description,
-      userID: course.CreatedByUserID,
-      actions: <Button>Class Content</Button>,
+      students: 9,
+      actions: <Button variant="contained" size="meduium">Class Content</Button>,
     };
   });
 
@@ -110,7 +105,7 @@ const TeacherDashboard = (props) => {
   return (
     <>
       {render && (
-        <TablePageCard title={"Users"} table={{ columns, data, options }} />
+        <TablePageCard title={"Teacher Dashboard"} table={{ columns, data, options }} />
       )}
     </>
   );

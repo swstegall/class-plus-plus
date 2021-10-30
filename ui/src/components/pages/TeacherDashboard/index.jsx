@@ -1,6 +1,7 @@
 import React from "react";
-import TablePageCard from "../../individual/TablePageCard";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import TablePageCard from "../../individual/TablePageCard";
 import { UsersActions } from "../../../redux/reducers/Users";
 import ActionsButton from "./ActionsButton";
 import { CoursesActions } from "../../../redux/reducers/Courses";

@@ -16,6 +16,7 @@ import TeacherDashboard from "./pages/TeacherDashboard";
 import StudentCourseHome from "./pages/StudentCourseHome";
 import StudentSubmitAssignment from "./pages/StudentSubmitAssignment";
 import StudentViewAssignment from "./pages/StudentViewAssignment";
+import TeacherCourseHome from "./pages/TeacherCourseHome";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -95,6 +96,9 @@ const App = () => {
             <CustomAppBar />
             <div className={"container-fluid"} style={{ width: "75vw" }}>
               <Switch>
+                <Route key={"courses"} path={"/course_home"}>
+                  <TeacherCourseHome dispatch={dispatch} />
+                </Route>
                 <Route key={"courses"} path={"/courses"}>
                   <TeacherDashboard dispatch={dispatch} />
                 </Route>

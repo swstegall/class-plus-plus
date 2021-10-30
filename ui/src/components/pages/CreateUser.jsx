@@ -3,12 +3,28 @@ import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import { Form, FormSpy } from "react-final-form";
 import * as yup from "yup";
-import { Button, Card, Container, Typography } from "@mui/material";
+import { Button, Card, Container, MenuItem, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import LockIcon from "@mui/icons-material/Lock";
 import validateFinalForm from "../../utilities/validateFinalForm";
-import { TextField } from "mui-rff";
+import { Select, TextField } from "mui-rff";
 import { UserActions } from "../../redux/reducers/User";
+
+const gradeOptions = [
+  { name: "Kindergarten", value: "K" },
+  { name: "First Grade", value: "1" },
+  { name: "Second Grade", value: "2" },
+  { name: "Third Grade", value: "3" },
+  { name: "Fourth Grade", value: "4" },
+  { name: "Fifth Grade", value: "5" },
+  { name: "Sixth Grade", value: "6" },
+  { name: "Seventh Grade", value: "7" },
+  { name: "Eigth Grade", value: "8" },
+  { name: "Ninth Grade", value: "9" },
+  { name: "Tenth Grade", value: "10" },
+  { name: "Eleventh Grade", value: "11" },
+  { name: "Twelfth Grade", value: "12" },
+];
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,18 +49,32 @@ const useStyles = makeStyles((theme) => ({
 const initialValues = {
   email: null,
   password: null,
+  firstName: null,
+  lastName: null,
+  grade: null,
 };
 
 const validationSchema = yup.object({
   email: yup.string().required().nullable(),
   password: yup.string().required().nullable(),
+  firstName: yup.string().required().nullable(),
+  lastName: yup.string().required().nullable(),
+  grade: yup.string().required().nullable(),
 });
 
-const Login = (props) => {
+const CreateUser = (props) => {
   const classes = useStyles();
 
   const onSubmit = async (values) => {
-    await props.dispatch(UserActions.Login(values.email, values.password));
+    await props.dispatch(
+      UserActions.Register(
+        values.email,
+        values.password,
+        values.firstName,
+        values.lastName,
+        values.grade
+      )
+    );
   };
 
   return (
@@ -60,7 +90,7 @@ const Login = (props) => {
                   <LockIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  Class++
+                  Create User
                 </Typography>
                 <Form
                   onSubmit={onSubmit}
@@ -100,6 +130,49 @@ const Login = (props) => {
                       </div>
                       <div className={"row pt-2"}>
                         <div className={"col"}>
+                          <TextField
+                            fullWidth
+                            label={"First Name"}
+                            name={"firstName"}
+                            variant={"outlined"}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className={"row pt-2"}>
+                        <div className={"col"}>
+                          <TextField
+                            fullWidth
+                            label={"Last Name"}
+                            name={"lastName"}
+                            variant={"outlined"}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className={"row pt-2"}>
+                        <div className={"col"}>
+                          <Select
+                            variant={"outlined"}
+                            label={"Grade"}
+                            displayEmpty
+                            name="grade"
+                            required
+                          >
+                            <MenuItem value={null}>Select a Grade</MenuItem>
+                            {gradeOptions.map((gradeOption) => (
+                              <MenuItem
+                                value={gradeOption.value}
+                                key={`create-user-grade-select-${gradeOption.name}-${gradeOption.value}`}
+                              >
+                                {gradeOption.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </div>
+                      </div>
+                      <div className={"row pt-2"}>
+                        <div className={"col"}>
                           <FormSpy
                             subscription={{
                               values: true,
@@ -121,7 +194,7 @@ const Login = (props) => {
                                   pristine
                                 }
                               >
-                                Login
+                                Create User
                               </Button>
                             )}
                           </FormSpy>
@@ -129,7 +202,7 @@ const Login = (props) => {
                       </div>
                       <div className={"row pt-1 pb-2"}>
                         <div className={"col"}>
-                          <Link to="/create_user">Create User</Link>
+                          <Link to="/login">Login</Link>
                         </div>
                       </div>
                     </form>
@@ -145,4 +218,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default CreateUser;

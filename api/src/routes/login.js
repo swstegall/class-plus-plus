@@ -41,6 +41,8 @@ const login = async (req, res) => {
           expiresIn: "3h",
         }
       ),
+      UserID: currentCredential.ID,
+      Email: currentCredential.Email,
       RoleID: currentCredential.user.RoleID,
       FirstName: currentCredential.user.FirstName,
       LastName: currentCredential.user.LastName,

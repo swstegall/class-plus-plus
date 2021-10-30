@@ -20,5 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+  courseRegistration.associate = (models) => {
+    models.courseRegistration.belongsTo(models.course);
+  };
   return courseRegistration;
 };

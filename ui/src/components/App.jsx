@@ -3,13 +3,14 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { useEffectOnce } from "react-use";
+import { useEffectOnce, useInterval } from "react-use";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import { NotificationActions } from "../redux/reducers/Notification";
 import { LinearProgress } from "@mui/material";
 import { UserActions } from "../redux/reducers/User";
 import CreateUser from "./pages/CreateUser";
+import { UsersActions } from "../redux/reducers/Users";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -23,7 +24,7 @@ const App = () => {
   const loggedIn = User.Email !== null && User.Token !== null;
 
   useEffectOnce(() => {
-    const roleID = localStorage.getItem("RoleID");
+    const roleID = Number(localStorage.getItem("RoleID"));
     const token = localStorage.getItem("Token");
     const userID = localStorage.getItem("UserID");
     const grade = localStorage.getItem("Grade");
@@ -47,13 +48,21 @@ const App = () => {
           lastName,
           roleID,
           userID,
-          `Bearer ${token}`
+          token
         )
       );
     } else {
       dispatch(UserActions.Reset());
     }
   });
+
+  useInterval(
+    () => {
+      // dispatch(UsersActions.Cycle(User.Token));
+      console.log(User);
+    },
+    loggedIn ? 5000 : null
+  );
 
   return (
     <>

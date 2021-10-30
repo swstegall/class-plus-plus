@@ -48,6 +48,13 @@ const { initialize, reset } = userSlice.actions;
 const Initialize =
   (email, firstName, grade, lastName, roleID, userID, token) =>
   async (dispatch) => {
+    console.log(email);
+    console.log(firstName);
+    console.log(grade);
+    console.log(lastName);
+    console.log(roleID);
+    console.log(userID);
+    console.log(token);
     dispatch(
       initialize({
         Email: email,
@@ -59,7 +66,7 @@ const Initialize =
         Token: token,
       })
     );
-    dispatch(UsersActions.Cycle(token));
+    // dispatch(UsersActions.Cycle(token));
   };
 
 const Login = (email, password) => async (dispatch) => {
@@ -85,9 +92,10 @@ const Login = (email, password) => async (dispatch) => {
         LastName: response.data.LastName,
         RoleID: response.data.RoleID,
         UserID: response.data.UserID,
-        Token: response.data.Token,
+        Token: response.data.token,
       })
     );
+    console.log(response.data);
     localStorage.setItem("Email", response.data.Email);
     localStorage.setItem("FirstName", response.data.FirstName);
     localStorage.setItem("Grade", response.data.Grade);

@@ -53,64 +53,39 @@ export const Cycle = (token) => async (dispatch) => {
   dispatch(AppActions.SetLoading(false));
 };
 
-export const Ban = (id, token) => async (dispatch) => {
+export const AdminUpdate = (token, userObject) => async (dispatch) => {
+  dispatch(AppActions.SetLoading(true));
   try {
-    await axios({
-      method: "post",
-      url: `${C.localUrl}banUser`,
+    const response = await axios({
+      method: "put",
+      url: `${C.localUrl}users`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         authorization: `Bearer ${token}`,
       },
       data: {
-        id,
+        ...userObject,
       },
     });
+    dispatch(cycle(response.data));
     dispatch(
       NotificationActions.Open({
-        Message: "User banned successfully.",
+        Message: "User has been updated successfully.",
         Severity: "success",
       })
     );
   } catch (error) {
+    localStorage.clear();
+    dispatch(UserActions.Reset());
     dispatch(
       NotificationActions.Open({
-        Message: "Error banning user.",
+        Message: "Session invalid. Login again.",
         Severity: "error",
       })
     );
   }
-};
-
-export const Unban = (id, token) => async (dispatch) => {
-  try {
-    await axios({
-      method: "post",
-      url: `${C.localUrl}unbanUser`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
-      data: {
-        id,
-      },
-    });
-    dispatch(
-      NotificationActions.Open({
-        Message: "User unbanned successfully.",
-        Severity: "success",
-      })
-    );
-  } catch (error) {
-    dispatch(
-      NotificationActions.Open({
-        Message: "Error unbanning user.",
-        Severity: "error",
-      })
-    );
-  }
+  dispatch(AppActions.SetLoading(false));
 };
 
 const Reset = () => async (dispatch) => {
@@ -118,9 +93,8 @@ const Reset = () => async (dispatch) => {
 };
 
 export const UsersActions = {
+  AdminUpdate,
   Cycle,
-  Ban,
-  Unban,
   Reset,
 };
 

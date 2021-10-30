@@ -141,38 +141,6 @@ const Register =
     dispatch(AppActions.SetLoading(false));
   };
 
-const ChangePassword = (password, token) => async (dispatch) => {
-  try {
-    await axios({
-      method: "post",
-      url: `${C.localUrl}changePassword`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
-      data: {
-        password,
-      },
-    });
-    localStorage.clear();
-    dispatch(reset());
-    dispatch(
-      NotificationActions.Open({
-        Message: "Password has been changed successfully.",
-        Severity: "success",
-      })
-    );
-  } catch (error) {
-    dispatch(
-      NotificationActions.Open({
-        Message: "Error changing password.",
-        Severity: "error",
-      })
-    );
-  }
-};
-
 const Reset = () => async (dispatch) => dispatch(reset());
 
 export const UserActions = {
@@ -180,7 +148,6 @@ export const UserActions = {
   Login,
   Register,
   Reset,
-  ChangePassword,
 };
 
 export default userSlice.reducer;

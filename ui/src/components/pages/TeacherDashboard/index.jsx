@@ -1,26 +1,16 @@
 import React from "react";
-import TablePageCard from "../individual/TablePageCard";
+import TablePageCard from "../../individual/TablePageCard";
 import { useSelector } from "react-redux";
-import { UsersActions } from "../../redux/reducers/Users";
-import { Button } from "@mui/material";
-import ButtonGroup from '@mui/material/ButtonGroup';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { UsersActions } from "../../../redux/reducers/Users";
+import ActionsButton from "./ActionsButton";
 
-// Content
-// Edit
-// Delete
-// Archive
 const columns = [
   {
-    name: "id",
-    label: "ID",
-  },
-  {
-    name: "title",
+    name: "courseName",
     label: "Course Name",
   },
   {
-    name: "students",
+    name: "numStudents",
     label: "Students",
   },
   {
@@ -42,9 +32,6 @@ const options = {
 };
 
 const TeacherDashboard = (props) => {
-  const [editUserDialogOpen, setEditUserDialogOpen] = React.useState(false);
-  const [userID, setUserID] = React.useState(null);
-  // const Courses = useSelector((state) => state.Courses);
   const Courses = {
     Loaded: true,
     Active: [
@@ -85,23 +72,15 @@ const TeacherDashboard = (props) => {
 
   const data = Courses.Active.map((course) => {
     return {
-      id: course.ID,
-      label: course.Label,
-      title: "test",
-      students: 9,
+      courseName: course.CourseName,
+      numStudents: 9,
       actions: (
-        <ButtonGroup variant="contained" size="meduium" aria-label="split button"
-        onClick={() => {
-          setEditUserDialogOpen(true);
-          setUserID(user.ID);
-        }}
-      >
-        Edit
-          <Button>
-          Class Content
-        </Button>
-        <ArrowDropDownIcon/>
-        </ButtonGroup>
+        <ActionsButton
+          sendToCourseHome={() => console.log("sendToCourseHome stub.")}
+          spawnEditCourseDialog={() =>
+            console.log("spawnEditCourseDialog stub.")
+          }
+        />
       ),
     };
   });
@@ -115,10 +94,7 @@ const TeacherDashboard = (props) => {
   return (
     <>
       {render && (
-        <TablePageCard
-          title={"Teacher Dashboard"}
-          table={{ columns, data, options }}
-        />
+        <TablePageCard title={"Courses"} table={{ columns, data, options }} />
       )}
     </>
   );

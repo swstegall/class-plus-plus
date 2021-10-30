@@ -91,7 +91,12 @@ const App = () => {
           <>
             <CustomAppBar />
             <div className={"container-fluid"} style={{ width: "75vw" }}>
-              <TeacherDashboard />
+              <Switch>
+                <Route key={"courses"} path={"/courses"}>
+                  <TeacherDashboard dispatch={dispatch} />
+                </Route>
+                <Redirect to={"/courses"} />
+              </Switch>
             </div>
           </>
         ) : (

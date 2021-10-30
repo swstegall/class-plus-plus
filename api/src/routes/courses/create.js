@@ -12,6 +12,7 @@ const create = async (req, res) => {
         Label: req.body.Label,
         Title: req.body.Title,
         Description: req.body.Description,
+        CreatedByUserID: tokenObject.UserID,
       });
       const courses = await models.course.findAll();
       res.status(200).json(courses);

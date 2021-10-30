@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         field: "Description",
         type: DataTypes.STRING,
       },
+      CreatedByUserID: {
+        field: "CreatedByUserID",
+        type: DataTypes.STRING,
+      }
     },
     {
       timestamps: false,

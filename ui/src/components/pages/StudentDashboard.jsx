@@ -2,33 +2,25 @@ import React from "react";
 import TablePageCard from "../individual/TablePageCard";
 import { useSelector } from "react-redux";
 import { UsersActions } from "../../redux/reducers/Users";
-
+import Button from '@mui/material/Button';
 
 
 const columns = [
   {
     name: "id",
-    label: "ID",
+    label: "Course ID",
   },
   {
     name: "label",
-    label: "Label",
-  },
-  {
-    name: "title",
-    label: "Title",
+    label: "Course Name",
   },
   {
     name: "description",
-    label: "Description",
-  },
-  {
-    name: "userID",
-    label: "User ID",
+    label: "Instructor",
   },
   {
     name: "actions",
-    label: "Action",
+    label: "Content",
     options: {
       filter: false,
       sort: false,
@@ -94,10 +86,8 @@ const StudentDashboard = (props) => {
     return {
       id: course.ID,
       label: course.Label,
-      title: course.Title,
       description: course.Description,
-      userID: course.CreatedByUserID,
-      actions: "-",
+      actions: <Button variant="contained">Course Home</Button>,
     };
   });
 
@@ -109,7 +99,7 @@ const StudentDashboard = (props) => {
   return (
     <>
       {render && (
-        <TablePageCard title={"Users"} table={{ columns, data, options }} />
+        <TablePageCard title={"Courses"} table={{ columns, data, options }} />
       )}
     </>
   );

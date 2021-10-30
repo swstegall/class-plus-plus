@@ -11,6 +11,7 @@ import { LinearProgress } from "@mui/material";
 import { UserActions } from "../redux/reducers/User";
 import CreateUser from "./pages/CreateUser";
 import CustomAppBar from "./individual/CustomAppBar";
+import StudentDashboard from "./pages/StudentDashboard";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -88,7 +89,10 @@ const App = () => {
         ) : User.RoleID === 1 ? (
           <>TeacherPage</>
         ) : (
-          <>StudentPage</>
+          <>
+            <CustomAppBar />
+            <StudentDashboard />
+          </>
         )
       ) : (
         <Switch>

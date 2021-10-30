@@ -1,9 +1,10 @@
 import React from "react";
-import TablePageCard from "../individual/TablePageCard";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import { CoursesActions } from "../../redux/reducers/Courses";
 import { TeachersActions } from "../../redux/reducers/Teachers";
+import { useHistory } from "react-router";
+import TablePageCard from "../individual/TablePageCard";
 
 const columns = [
   {

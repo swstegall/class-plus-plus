@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import C from "../../utilities/constants";
 import { NotificationActions } from "./Notification";
-import { UsersActions } from "./Users";
 import { AppActions } from "./App";
 
 const initialState = {
@@ -48,13 +47,6 @@ const { initialize, reset } = userSlice.actions;
 const Initialize =
   (email, firstName, grade, lastName, roleID, userID, token) =>
   async (dispatch) => {
-    console.log(email);
-    console.log(firstName);
-    console.log(grade);
-    console.log(lastName);
-    console.log(roleID);
-    console.log(userID);
-    console.log(token);
     dispatch(
       initialize({
         Email: email,
@@ -66,7 +58,6 @@ const Initialize =
         Token: token,
       })
     );
-    // dispatch(UsersActions.Cycle(token));
   };
 
 const Login = (email, password) => async (dispatch) => {
@@ -95,7 +86,6 @@ const Login = (email, password) => async (dispatch) => {
         Token: response.data.token,
       })
     );
-    console.log(response.data);
     localStorage.setItem("Email", response.data.Email);
     localStorage.setItem("FirstName", response.data.FirstName);
     localStorage.setItem("Grade", response.data.Grade);
@@ -103,7 +93,6 @@ const Login = (email, password) => async (dispatch) => {
     localStorage.setItem("RoleID", response.data.RoleID);
     localStorage.setItem("UserID", response.data.UserID);
     localStorage.setItem("Token", response.data.token);
-    // dispatch(UsersActions.Cycle(response.data.token));
   } catch (error) {
     dispatch(
       NotificationActions.Open({

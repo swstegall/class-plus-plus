@@ -8,7 +8,7 @@ const consoleMessages = (_) => (next) => (action) => {
   return result;
 };
 
-export default (initialState = {}) => {
+const store = (initialState = {}) => {
   return configureStore({
     reducer: appReducer,
     middleware: (getDefaultMiddleware) =>
@@ -17,3 +17,5 @@ export default (initialState = {}) => {
     preloadedState: initialState,
   });
 };
+
+export default store;

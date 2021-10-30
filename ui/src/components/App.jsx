@@ -3,14 +3,13 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { useEffectOnce, useInterval } from "react-use";
+import { useEffectOnce } from "react-use";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import { NotificationActions } from "../redux/reducers/Notification";
 import { LinearProgress } from "@mui/material";
 import { UserActions } from "../redux/reducers/User";
 import CreateUser from "./pages/CreateUser";
-import { UsersActions } from "../redux/reducers/Users";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -56,14 +55,6 @@ const App = () => {
     }
   });
 
-  useInterval(
-    () => {
-      // dispatch(UsersActions.Cycle(User.Token));
-      console.log(User);
-    },
-    loggedIn ? 5000 : null
-  );
-
   return (
     <>
       {!loggedIn && Loading && <LinearProgress />}
@@ -82,12 +73,14 @@ const App = () => {
       </Snackbar>
       {loggedIn ? (
         User.RoleID === 2 ? (
-          <Switch>
-            <Route key={"admin_dashboard"} path={"/admin_dashboard"}>
-              <AdminDashboard dispatch={dispatch} />
-            </Route>
-            <Redirect to={"/admin_dashboard"} />
-          </Switch>
+          <div className={"container-fluid"} style={{ width: "75vw" }}>
+            <Switch>
+              <Route key={"admin_dashboard"} path={"/admin_dashboard"}>
+                <AdminDashboard dispatch={dispatch} />
+              </Route>
+              <Redirect to={"/admin_dashboard"} />
+            </Switch>
+          </div>
         ) : User.RoleID === 1 ? (
           <>TeacherPage</>
         ) : (

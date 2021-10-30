@@ -4,7 +4,6 @@ import C from "../../utilities/constants";
 import { AppActions } from "./App";
 import { NotificationActions } from "./Notification";
 import { UserActions } from "./User";
-import * as _ from "lodash";
 
 const initialState = {
   Loaded: false,
@@ -16,7 +15,7 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     cycle: (state, action) => {
-      state.Active = _.orderBy([...action.payload], ["username"], "asc");
+      state.Active = action.payload;
       state.Loaded = true;
     },
     reset: (state) => {
@@ -40,7 +39,7 @@ export const Cycle = (token) => async (dispatch) => {
         authorization: `Bearer ${token}`,
       },
     });
-    dispatch(cycle(response.data.users));
+    dispatch(cycle(response.data));
   } catch (error) {
     localStorage.clear();
     dispatch(UserActions.Reset());

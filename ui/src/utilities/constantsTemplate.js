@@ -1,8 +1,10 @@
 const serverHost = "yourServerHostHere";
 const serverPort = "yourServerPortHere";
 
-export default {
+const constants = {
   serverHost,
   serverPort,
   localUrl: `http://${serverHost}:${serverPort}/`,
 };
+
+export default constants;

@@ -82,6 +82,7 @@ const AdminDashboard = (props) => {
       actions: (
         <Button
           variant={"contained"}
+          color={"secondary"}
           onClick={() => {
             setEditUserDialogOpen(true);
             setUserID(user.ID);

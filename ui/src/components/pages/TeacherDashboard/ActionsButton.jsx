@@ -56,14 +56,13 @@ const ActionsButton = (props) => {
       <Grid item xs={12}>
         <ButtonGroup
           variant="contained"
-          color="primary"
+          color="secondary"
           size={"small"}
           ref={anchorRef}
           aria-label="split button"
         >
           <Button onClick={handleClick}>{options[selectedIndex]}</Button>
           <Button
-            color="primary"
             size="small"
             aria-controls={open ? "split-button-menu" : undefined}
             aria-expanded={open ? "true" : undefined}

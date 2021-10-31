@@ -71,6 +71,7 @@ const StudentDashboard = (props) => {
       actions: (
         <Button
           variant="contained"
+          color={"secondary"}
           onClick={() => history.push("/course_home")}
         >
           Home
@@ -86,7 +87,10 @@ const StudentDashboard = (props) => {
           title={"Courses"}
           table={{ columns, data, options }}
           button={{
-            isRendered: false,
+            isRendered: true,
+            color: "secondary",
+            label: "Register for a Course",
+            handleClick: () => console.log("test"),
           }}
         />
       )}

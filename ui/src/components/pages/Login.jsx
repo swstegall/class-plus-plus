@@ -111,7 +111,7 @@ const Login = (props) => {
                               <Button
                                 fullWidth
                                 variant="contained"
-                                color="primary"
+                                color="secondary"
                                 className={classes.submit}
                                 type="submit"
                                 disabled={

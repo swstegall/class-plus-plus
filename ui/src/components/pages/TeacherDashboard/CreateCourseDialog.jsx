@@ -58,7 +58,9 @@ const CreateCourseDialog = (props) => {
             aria-labelledby="create-user-dialog-title"
             aria-describedby="create-user-dialog-description"
           >
-            <DialogTitle id="create-user-dialog-title">Create Course</DialogTitle>
+            <DialogTitle id="create-user-dialog-title">
+              Create Course
+            </DialogTitle>
             <DialogContent>
               <div className={"row pt-2"}>
                 <div className={"col"}>
@@ -106,12 +108,16 @@ const CreateCourseDialog = (props) => {
               >
                 {({ values, submitting, pristine }) => (
                   <>
-                    <Button variant={"outlined"} onClick={props.handleClose}>
+                    <Button
+                      variant={"outlined"}
+                      color={"secondary"}
+                      onClick={props.handleClose}
+                    >
                       Close
                     </Button>
                     <Button
                       variant="contained"
-                      color="primary"
+                      color="secondary"
                       type="submit"
                       disabled={
                         values.label === null ||

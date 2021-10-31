@@ -119,13 +119,14 @@ const EditCourseDialog = (props) => {
                       <>
                         <Button
                           variant={"outlined"}
+                          color={"secondary"}
                           onClick={props.handleClose}
                         >
                           Close
                         </Button>
                         <Button
                           variant="contained"
-                          color="primary"
+                          color="secondary"
                           type="submit"
                           disabled={
                             values.label === null ||

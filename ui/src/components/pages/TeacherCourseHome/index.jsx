@@ -1,39 +1,39 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import TablePageCard from "../../individual/TablePageCard";
-import { UsersActions } from "../../../redux/reducers/Users";
 import EditButton from "./EditButton";
 import UploadButton from "./UploadButton";
 import SubmissionButton from "./SubmissionButton";
 import GradeButton from "./GradeButton";
-
+import { AssignmentsActions } from "../../../redux/reducers/Assignments";
+import { CoursesActions } from "../../../redux/reducers/Courses";
 
 const columns = [
   {
-    name: "Assignment",
-    label: "Assignment",
+    name: "title",
+    label: "Title",
   },
   {
     name: "dueDate",
     label: "Due Date",
   },
-  {
-    name: "editAssignment",
-    label: "Edit Assignment",
-  },
-  {
-    name: "uploadAssignment",
-    label: "Upload Assignment",
-  },
-  {
-    name: "viewSubmissions",
-    label: "View Submissions",
-  },
-  {
-    name: "uploadGrade",
-    label: "UploadGrades",
-  },
+  // {
+  //   name: "editAssignment",
+  //   label: "Edit Assignment",
+  // },
+  // {
+  //   name: "uploadAssignment",
+  //   label: "Upload Assignment",
+  // },
+  // {
+  //   name: "viewSubmissions",
+  //   label: "View Submissions",
+  // },
+  // {
+  //   name: "uploadGrade",
+  //   label: "ViewGrades",
+  // },
 ];
 
 const options = {
@@ -43,91 +43,61 @@ const options = {
 };
 
 const TeacherCourseHome = (props) => {
-  const history = useHistory();
-  const Courses = {
-    Loaded: true,
-    Active: [
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-      },
-    ],
-  };
+  const { courseID } = useParams();
+  const Assignments = useSelector((state) => state.Assignments);
   const User = useSelector((state) => state.User);
-  const render = User.Loaded && Courses.Loaded;
-
-  const data = Courses.Active.map((course) => {
-    return {
-      assignment: course.Assignment,
-      dueDate: 9,
-      editAssignment: (
-        <EditButton
-          spawnEditCourseDialog={() =>
-            console.log("spawnEditCourseDialog stub.")
-          }
-        />
-      ),
-      uploadAssignment: (
-        <UploadButton
-          spawnUploadAssignmentDialog={() =>
-            console.log("spawnUploadAssignmentDialog stub.")
-          }
-        />
-      ),
-      viewSubmissions: (
-        <SubmissionButton
-          spawnViewSubmissionsDialog={() =>
-            console.log("spawnViewSubmsissionsDialog stub.")
-          }
-        />
-      ),
-     uploadGrade: (
-        <GradeButton
-          spawnUploadGradeDialog={() =>
-            console.log("spawnUploadGradeDialog stub.")
-          }
-        />
-      ),
-    };
-  });
+  const Courses = useSelector((state) => state.Courses);
+  const course = Courses.Active.find((c) => c.ID === courseID);
+  const render = User.Loaded && Courses.Loaded && Assignments.Loaded;
 
   React.useEffect(() => {
-    if (User.Loaded && !Courses.Loaded) {
-      props.dispatch(UsersActions.Cycle(User.Token));
+    if (User.Loaded && courseID !== undefined) {
+      props.dispatch(AssignmentsActions.Cycle(User.Token, courseID));
+    } else if (User.Loaded && !Courses.Loaded) {
+      props.dispatch(CoursesActions.Cycle(User.Token));
     }
-  }, [User, Courses.Loaded, props]);
+  }, [courseID]);
+
+  const data = Assignments.Active.map((assignment) => {
+    return {
+      title: assignment.Title,
+      dueDate: "-",
+      // editAssignment: (
+      //   <EditButton
+      //     spawnEditCourseDialog={() =>
+      //       console.log("spawnEditCourseDialog stub.")
+      //     }
+      //   />
+      // ),
+      // uploadAssignment: (
+      //   <UploadButton
+      //     spawnUploadAssignmentDialog={() =>
+      //       console.log("spawnUploadAssignmentDialog stub.")
+      //     }
+      //   />
+      // ),
+      // viewSubmissions: (
+      //   <SubmissionButton
+      //     spawnViewSubmissionsDialog={() =>
+      //       console.log("spawnViewSubmsissionsDialog stub.")
+      //     }
+      //   />
+      // ),
+      // uploadGrade: (
+      //   <GradeButton
+      //     spawnUploadGradeDialog={() =>
+      //       console.log("spawnUploadGradeDialog stub.")
+      //     }
+      //   />
+      // ),
+    };
+  });
 
   return (
     <>
       {render && (
         <TablePageCard
-          title={"Course Home"}
+          title={`${course.Label}: ${course.Title}`}
           table={{ columns, data, options }}
           button={{
             isRendered: false,

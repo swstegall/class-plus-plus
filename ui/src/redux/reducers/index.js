@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import App from "./App";
+import Assignments from "./Assignments";
 import Courses from "./Courses";
 import CourseRegistrations from "./CourseRegistrations";
 import CoursesList from "./CoursesList";
@@ -10,6 +11,7 @@ import Users from "./Users";
 
 export default combineReducers({
   App,
+  Assignments,
   Courses,
   CourseRegistrations,
   CoursesList,

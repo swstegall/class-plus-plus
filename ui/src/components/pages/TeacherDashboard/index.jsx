@@ -72,7 +72,7 @@ const TeacherDashboard = (props) => {
       numStudents,
       actions: (
         <ActionsButton
-          sendToCourseHome={() => history.push("/course_home")}
+          sendToCourseHome={() => history.push(`/course_home/${course.ID}`)}
           spawnEditCourseDialog={() => {
             setCourseID(course.ID);
             setEditCourseDialogOpen(true);

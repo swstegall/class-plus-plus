@@ -35,12 +35,15 @@ const Cycle = (token, courseID) => async (dispatch) => {
   dispatch(AppActions.SetLoading(true));
   try {
     const response = await axios({
-      method: "get",
-      url: `${C.localUrl}assignments`,
+      method: "post",
+      url: `${C.localUrl}assignments/read`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         authorization: `Bearer ${token}`,
+      },
+      data: {
+        CourseID: courseID,
       },
     });
     dispatch(cycle(response.data));

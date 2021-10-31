@@ -23,18 +23,18 @@ const validationSchema = yup.object({
 const CourseRegistrationDialog = (props) => {
   const User = useSelector((state) => state.User);
   const Courses = useSelector((state) => state.Courses);
-  const CoursesList = useSelector((state) => state.CoursesList).Active.filter(
-    (clItem) => {
-      let valid = true;
-      Courses.Active.forEach((course) => {
-        if (course.ID === clItem.ID) {
-          valid = false;
-        }
-      });
-      return valid;
-    }
-  );
+  const CoursesList = useSelector((state) => state.CoursesList);
   const render = Courses.Loaded && CoursesList.Loaded;
+
+  const courseOptions = CoursesList.Active.filter((clItem) => {
+    let valid = true;
+    Courses.Active.forEach((course) => {
+      if (course.CourseID === clItem.ID) {
+        valid = false;
+      }
+    });
+    return valid;
+  });
 
   React.useEffect(() => {
     if (User.Loaded && !CoursesList.Loaded) {
@@ -45,14 +45,8 @@ const CourseRegistrationDialog = (props) => {
   }, [User, CoursesList.Loaded, props]);
 
   const onSubmit = async (values) => {
-    props.dispatch(
-      CoursesActions.TeacherCreate(User.Token, {
-        Label: values.label,
-        Title: values.title,
-        Description: values.description,
-        ID: props.courseID,
-      })
-    );
+    props.dispatch(CoursesActions.StudentRegister(User.Token, values.courseID));
+    props.handleClose();
   };
 
   return (
@@ -92,7 +86,7 @@ const CourseRegistrationDialog = (props) => {
                         required
                       >
                         <MenuItem value={null}>Select a Course</MenuItem>
-                        {CoursesList.Active.map((course) => (
+                        {courseOptions.map((course) => (
                           <MenuItem
                             value={course.ID}
                             key={`student-register-for-course-select-${course.ID}`}
@@ -109,10 +103,9 @@ const CourseRegistrationDialog = (props) => {
                     subscription={{
                       values: true,
                       submitting: true,
-                      pristine: true,
                     }}
                   >
-                    {({ values, submitting, pristine }) => (
+                    {({ values, submitting }) => (
                       <>
                         <Button
                           variant={"outlined"}
@@ -129,8 +122,7 @@ const CourseRegistrationDialog = (props) => {
                             values.label === null ||
                             values.title === null ||
                             values.description === null ||
-                            submitting ||
-                            pristine
+                            submitting
                           }
                           onClick={() => {
                             onSubmit(values);

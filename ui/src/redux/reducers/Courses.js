@@ -57,6 +57,41 @@ const Cycle = (token) => async (dispatch) => {
   dispatch(AppActions.SetLoading(false));
 };
 
+const StudentRegister = (token, courseID) => async (dispatch) => {
+  dispatch(AppActions.SetLoading(true));
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${C.localUrl}courses/register`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      data: {
+        CourseID: courseID,
+      },
+    });
+    dispatch(cycle(response.data));
+    dispatch(
+      NotificationActions.Open({
+        Message: "Registration successful.",
+        Severity: "success",
+      })
+    );
+  } catch (error) {
+    localStorage.clear();
+    dispatch(UserActions.Reset());
+    dispatch(
+      NotificationActions.Open({
+        Message: "Session invalid. Login again.",
+        Severity: "error",
+      })
+    );
+  }
+  dispatch(AppActions.SetLoading(false));
+};
+
 const TeacherCreate = (token, courseObject) => async (dispatch) => {
   dispatch(AppActions.SetLoading(true));
   try {
@@ -130,6 +165,7 @@ const TeacherUpdate = (token, courseObject) => async (dispatch) => {
 export const CoursesActions = {
   Cycle,
   Reset,
+  StudentRegister,
   TeacherCreate,
   TeacherUpdate,
 };

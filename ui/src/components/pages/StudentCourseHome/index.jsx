@@ -6,6 +6,7 @@ import TablePageCard from "../../individual/TablePageCard";
 import ActionsButton from "./ActionsButton";
 import { AssignmentsActions } from "../../../redux/reducers/Assignments";
 import { CoursesActions } from "../../../redux/reducers/Courses";
+import { AssignmentSubmissionsActions } from "../../../redux/reducers/AssignmentSubmissions";
 
 const columns = [
   {
@@ -43,24 +44,41 @@ const StudentCourseHome = (props) => {
   const history = useHistory();
   const { courseID } = useParams();
   const Assignments = useSelector((state) => state.Assignments);
+  const AssignmentSubmissions = useSelector(
+    (state) => state.AssignmentSubmissions
+  );
   const User = useSelector((state) => state.User);
   const Courses = useSelector((state) => state.Courses);
   const course = Courses.Active.find((c) => c.course.ID === courseID);
-  const render = User.Loaded && Courses.Loaded && Assignments.Loaded;
+  const render =
+    User.Loaded &&
+    Courses.Loaded &&
+    Assignments.Loaded &&
+    AssignmentSubmissions.Loaded;
 
   React.useEffect(() => {
     if (User.Loaded && courseID !== undefined) {
       props.dispatch(AssignmentsActions.Cycle(User.Token, courseID));
-    } else if (User.Loaded && !Courses.Loaded) {
+    }
+    if (User.Loaded && !Courses.Loaded) {
       props.dispatch(CoursesActions.Cycle(User.Token));
+    }
+    if (User.Loaded && !AssignmentSubmissions.Loaded) {
+      props.dispatch(AssignmentSubmissionsActions.Cycle(User.Token));
     }
   }, [courseID]);
 
   const data = Assignments.Active.map((assignment) => {
+    let renderActions = true;
+    AssignmentSubmissions.Active.forEach((submission) => {
+      if (submission.AssignmentID === assignment.ID) {
+        renderActions = false;
+      }
+    });
     return {
       title: assignment.Title,
       dueDate: format(new Date(assignment.DueDate), "Pp"),
-      actions: (
+      actions: renderActions ? (
         <ActionsButton
           sendToViewAssignment={() =>
             history.push(
@@ -73,6 +91,8 @@ const StudentCourseHome = (props) => {
             )
           }
         />
+      ) : (
+        "Submitted"
       ),
     };
   });

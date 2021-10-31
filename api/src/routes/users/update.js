@@ -10,7 +10,7 @@ const update = async (req, res) => {
           Email: req.body.Email,
         },
         {
-          where: { ID: req.body.UserID },
+          where: { ID: tokenObject.UserID },
         }
       );
       await models.user.update(
@@ -21,7 +21,7 @@ const update = async (req, res) => {
           RoleID: req.body.RoleID,
         },
         {
-          where: { ID: req.body.UserID },
+          where: { ID: tokenObject.UserID },
         }
       );
       const users = await models.credential.findAll({

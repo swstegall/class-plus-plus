@@ -1,9 +1,10 @@
 import React from "react";
-import TablePageCard from "../individual/TablePageCard";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import { CoursesActions } from "../../redux/reducers/Courses";
 import { TeachersActions } from "../../redux/reducers/Teachers";
+import { useHistory } from "react-router";
+import TablePageCard from "../individual/TablePageCard";
 
 const columns = [
   {
@@ -42,6 +43,7 @@ const options = {
 };
 
 const StudentDashboard = (props) => {
+  const history = useHistory();
   const User = useSelector((state) => state.User);
   const Courses = useSelector((state) => state.Courses);
   const Teachers = useSelector((state) => state.Teachers);
@@ -66,7 +68,14 @@ const StudentDashboard = (props) => {
         teacher !== undefined && teacher !== null
           ? `${teacher.FirstName} ${teacher.LastName}`
           : "-",
-      actions: <Button variant="contained">Home</Button>,
+      actions: (
+        <Button
+          variant="contained"
+          onClick={() => history.push("/course_home")}
+        >
+          Home
+        </Button>
+      ),
     };
   });
 

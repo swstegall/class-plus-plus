@@ -67,7 +67,9 @@ const EditCourseDialog = (props) => {
                 aria-labelledby="edit-user-dialog-title"
                 aria-describedby="edit-user-dialog-description"
               >
-                <DialogTitle id="edit-user-dialog-title">Edit Course</DialogTitle>
+                <DialogTitle id="edit-user-dialog-title">
+                  Edit Course
+                </DialogTitle>
                 <DialogContent>
                   <div className={"row pt-2"}>
                     <div className={"col"}>

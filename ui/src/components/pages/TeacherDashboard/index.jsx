@@ -1,6 +1,7 @@
 import React from "react";
-import TablePageCard from "../../individual/TablePageCard";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import TablePageCard from "../../individual/TablePageCard";
 import { UsersActions } from "../../../redux/reducers/Users";
 import ActionsButton from "./ActionsButton";
 import { CoursesActions } from "../../../redux/reducers/Courses";
@@ -40,6 +41,7 @@ const options = {
 };
 
 const TeacherDashboard = (props) => {
+  const history = useHistory();
   const [createCourseDialogOpen, setCreateCourseDialogOpen] =
     React.useState(false);
   const [editCourseDialogOpen, setEditCourseDialogOpen] = React.useState(false);
@@ -70,7 +72,7 @@ const TeacherDashboard = (props) => {
       numStudents,
       actions: (
         <ActionsButton
-          sendToCourseHome={() => console.log("sendToCourseHome stub.")}
+          sendToCourseHome={() => history.push("/course_home")}
           spawnEditCourseDialog={() => {
             setCourseID(course.ID);
             setEditCourseDialogOpen(true);

@@ -1,21 +1,24 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { format } from "date-fns";
 import TablePageCard from "../../individual/TablePageCard";
 import ActionsButton from "./ActionsButton";
+import { AssignmentsActions } from "../../../redux/reducers/Assignments";
+import { CoursesActions } from "../../../redux/reducers/Courses";
 
 const columns = [
   {
-    name: "courseName",
-    label: "Name",
+    name: "title",
+    label: "Title",
   },
   {
-    name: "instructor",
-    label: "Grade",
+    name: "dueDate",
+    label: "Due Date",
   },
   {
     name: "actions",
-    label: "Content",
+    label: "Actions",
     options: {
       filter: false,
       sort: false,
@@ -38,57 +41,37 @@ const options = {
 
 const StudentCourseHome = (props) => {
   const history = useHistory();
-  const Courses = {
-    Loaded: true,
-    Active: [
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-    ],
-  };
+  const { courseID } = useParams();
+  const Assignments = useSelector((state) => state.Assignments);
   const User = useSelector((state) => state.User);
-  const render = User.Loaded && Courses.Loaded;
+  const Courses = useSelector((state) => state.Courses);
+  const course = Courses.Active.find((c) => c.course.ID === courseID);
+  const render = User.Loaded && Courses.Loaded && Assignments.Loaded;
 
-  const data = Courses.Active.map((course) => {
+  React.useEffect(() => {
+    if (User.Loaded && courseID !== undefined) {
+      props.dispatch(AssignmentsActions.Cycle(User.Token, courseID));
+    } else if (User.Loaded && !Courses.Loaded) {
+      props.dispatch(CoursesActions.Cycle(User.Token));
+    }
+  }, [courseID]);
+
+  const data = Assignments.Active.map((assignment) => {
     return {
-      courseName: course.Label,
-      instructor: course.Description,
+      title: assignment.Title,
+      dueDate: format(new Date(assignment.DueDate), "Pp"),
       actions: (
         <ActionsButton
-          sendToViewAssignment={() => history.push("/view_assignment")}
-          sendToSubmitAssignment={() => history.push("/submit_assignment")}
+          sendToViewAssignment={() =>
+            history.push(
+              `/course_home/${course.course.ID}/${assignment.ID}/view`
+            )
+          }
+          sendToSubmitAssignment={() =>
+            history.push(
+              `/course_home/${course.course.ID}/${assignment.ID}/submit`
+            )
+          }
         />
       ),
     };
@@ -98,7 +81,7 @@ const StudentCourseHome = (props) => {
     <>
       {render && (
         <TablePageCard
-          title={"Course Title"}
+          title={`${course.course.Label}: ${course.course.Title}`}
           table={{ columns, data, options }}
           button={{
             isRendered: false,

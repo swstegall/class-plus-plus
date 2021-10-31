@@ -96,7 +96,7 @@ const App = () => {
             <CustomAppBar />
             <div className={"container-fluid"} style={{ width: "75vw" }}>
               <Switch>
-                <Route key={"courses"} path={"/course_home"}>
+                <Route key={"courses"} path={"/course_home/:courseID"}>
                   <TeacherCourseHome dispatch={dispatch} />
                 </Route>
                 <Route key={"courses"} path={"/courses"}>
@@ -111,13 +111,19 @@ const App = () => {
             <CustomAppBar />
             <div className={"container-fluid"} style={{ width: "75vw" }}>
               <Switch>
-                <Route key={"submit_assignment"} path={"/submit_assignment"}>
+                <Route
+                  key={"submit_assignment"}
+                  path={"/course_home/:courseID/:assignmentID/submit"}
+                >
                   <StudentSubmitAssignment dispatch={dispatch} />
                 </Route>
-                <Route key={"view_assignment"} path={"/view_assignment"}>
+                <Route
+                  key={"view_assignment"}
+                  path={"/course_home/:courseID/:assignmentID/view"}
+                >
                   <StudentViewAssignment dispatch={dispatch} />
                 </Route>
-                <Route key={"course_home"} path={"/course_home"}>
+                <Route key={"course_home"} path={"/course_home/:courseID"}>
                   <StudentCourseHome dispatch={dispatch} />
                 </Route>
                 <Route key={"courses"} path={"/courses"}>

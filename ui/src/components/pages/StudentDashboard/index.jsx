@@ -22,7 +22,7 @@ const columns = [
   },
   {
     name: "actions",
-    label: "Content",
+    label: "Actions",
     options: {
       filter: false,
       sort: false,
@@ -44,7 +44,8 @@ const options = {
 };
 
 const StudentDashboard = (props) => {
-  const [courseRegistrationDialogOpen, setCourseRegistrationDialogOpen] = React.useState(false);
+  const [courseRegistrationDialogOpen, setCourseRegistrationDialogOpen] =
+    React.useState(false);
   const history = useHistory();
   const User = useSelector((state) => state.User);
   const Courses = useSelector((state) => state.Courses);
@@ -74,7 +75,7 @@ const StudentDashboard = (props) => {
         <Button
           variant="contained"
           color={"secondary"}
-          onClick={() => history.push("/course_home")}
+          onClick={() => history.push(`/course_home/${course.course.ID}`)}
         >
           Home
         </Button>

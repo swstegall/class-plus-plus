@@ -8,10 +8,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from "@mui/icons-material/Edit";
-import { Form, FormSpy } from "react-final-form";
 
-const EditButton = (props) => {
-    const [open, setOpen] = React.useState(false);
+ function FormDialog() {
+  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,5 +49,5 @@ const EditButton = (props) => {
       </Dialog>
     </div>
   );
-};
-export default EditButton; 
+}
+export defalut EditAssignmentDialog; 

@@ -41,6 +41,7 @@ const options = {
 };
 
 const TeacherDashboard = (props) => {
+  const history = useHistory();
   const [createCourseDialogOpen, setCreateCourseDialogOpen] =
     React.useState(false);
   const [editCourseDialogOpen, setEditCourseDialogOpen] = React.useState(false);
@@ -71,7 +72,7 @@ const TeacherDashboard = (props) => {
       numStudents,
       actions: (
         <ActionsButton
-          sendToCourseHome={() => console.log("sendToCourseHome stub.")}
+          sendToCourseHome={() => history.push("/course_home")}
           spawnEditCourseDialog={() => {
             setCourseID(course.ID);
             setEditCourseDialogOpen(true);

@@ -109,6 +109,7 @@ const TeacherDashboard = (props) => {
           button={{
             isRendered: true,
             label: "New Course",
+            color: "secondary",
             handleClick: () => setCreateCourseDialogOpen(true),
           }}
         />

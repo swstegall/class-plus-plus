@@ -5,43 +5,48 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import * as yup from "yup";
 import { Form, FormSpy } from "react-final-form";
-import { Button } from "@mui/material";
-import { TextField } from "mui-rff";
+import { Button, MenuItem } from "@mui/material";
 import { useSelector } from "react-redux";
 import validateFinalForm from "../../../utilities/validateFinalForm";
 import { CoursesActions } from "../../../redux/reducers/Courses";
+import { CoursesListActions } from "../../../redux/reducers/CoursesList";
+import { Select } from "mui-rff";
+
+const initialValues = {
+  courseID: null,
+};
 
 const validationSchema = yup.object({
-  label: yup.string().required().nullable(),
-  title: yup.string().required().nullable(),
-  description: yup.string().required().nullable(),
+  courseID: yup.string().required().nullable(),
 });
 
-const EditCourseDialog = (props) => {
+const CourseRegistrationDialog = (props) => {
   const User = useSelector((state) => state.User);
-  const CourseToEdit = useSelector((state) => state.Courses).Active.find(
-    (u) => u.ID === props.courseID
-  );
-  const render = CourseToEdit !== undefined && CourseToEdit !== null;
-  let initialValues = {};
+  const Courses = useSelector((state) => state.Courses);
+  const CoursesList = useSelector((state) => state.CoursesList);
+  const render = Courses.Loaded && CoursesList.Loaded;
 
-  if (render) {
-    initialValues = {
-      label: CourseToEdit.Label,
-      title: CourseToEdit.Title,
-      description: CourseToEdit.Description,
-    };
-  }
+  const courseOptions = CoursesList.Active.filter((clItem) => {
+    let valid = true;
+    Courses.Active.forEach((course) => {
+      if (course.CourseID === clItem.ID) {
+        valid = false;
+      }
+    });
+    return valid;
+  });
+
+  React.useEffect(() => {
+    if (User.Loaded && !CoursesList.Loaded) {
+      props.dispatch(CoursesListActions.Cycle(User.Token));
+    } else if (User.Loaded && !Courses.Loaded) {
+      props.dispatch(CoursesActions.Cycle(User.Token));
+    }
+  }, [User, CoursesList.Loaded, props]);
 
   const onSubmit = async (values) => {
-    props.dispatch(
-      CoursesActions.TeacherUpdate(User.Token, {
-        Label: values.label,
-        Title: values.title,
-        Description: values.description,
-        ID: props.courseID,
-      })
-    );
+    props.dispatch(CoursesActions.StudentRegister(User.Token, values.courseID));
+    props.handleClose();
   };
 
   return (
@@ -64,46 +69,32 @@ const EditCourseDialog = (props) => {
                 maxWidth={"sm"}
                 open={props.dialogOpen}
                 onClose={props.handleClose}
-                aria-labelledby="edit-user-dialog-title"
-                aria-describedby="edit-user-dialog-description"
+                aria-labelledby="create-user-dialog-title"
+                aria-describedby="create-user-dialog-description"
               >
-                <DialogTitle id="edit-user-dialog-title">
-                  Edit Course
+                <DialogTitle id="create-user-dialog-title">
+                  Create Course
                 </DialogTitle>
                 <DialogContent>
                   <div className={"row pt-2"}>
                     <div className={"col"}>
-                      <TextField
-                        fullWidth
-                        label={"Label"}
-                        name={"label"}
+                      <Select
                         variant={"outlined"}
+                        label={"Course"}
+                        displayEmpty
+                        name="courseID"
                         required
-                      />
-                    </div>
-                  </div>
-                  <div className={"row pt-2"}>
-                    <div className={"col"}>
-                      <TextField
-                        fullWidth
-                        label={"Title"}
-                        name={"title"}
-                        variant={"outlined"}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className={"row pt-2"}>
-                    <div className={"col"}>
-                      <TextField
-                        fullWidth
-                        label={"Description"}
-                        name={"description"}
-                        variant={"outlined"}
-                        multiline
-                        rows={4}
-                        required
-                      />
+                      >
+                        <MenuItem value={null}>Select a Course</MenuItem>
+                        {courseOptions.map((course) => (
+                          <MenuItem
+                            value={course.ID}
+                            key={`student-register-for-course-select-${course.ID}`}
+                          >
+                            {`${course.Label} ${course.Title}`}
+                          </MenuItem>
+                        ))}
+                      </Select>
                     </div>
                   </div>
                 </DialogContent>
@@ -112,10 +103,9 @@ const EditCourseDialog = (props) => {
                     subscription={{
                       values: true,
                       submitting: true,
-                      pristine: true,
                     }}
                   >
-                    {({ values, submitting, pristine }) => (
+                    {({ values, submitting }) => (
                       <>
                         <Button
                           variant={"outlined"}
@@ -132,15 +122,14 @@ const EditCourseDialog = (props) => {
                             values.label === null ||
                             values.title === null ||
                             values.description === null ||
-                            submitting ||
-                            pristine
+                            submitting
                           }
                           onClick={() => {
                             onSubmit(values);
                             props.handleClose();
                           }}
                         >
-                          Update
+                          Add
                         </Button>
                       </>
                     )}
@@ -155,4 +144,4 @@ const EditCourseDialog = (props) => {
   );
 };
 
-export default EditCourseDialog;
+export default CourseRegistrationDialog;

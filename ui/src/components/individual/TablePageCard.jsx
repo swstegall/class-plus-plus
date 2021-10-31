@@ -8,7 +8,14 @@ const TablePageCard = ({
   title = "",
   table: { columns, data, options },
   button,
-  button: { isRendered = false, label = "", handleClick, icon = <AddIcon /> },
+  button: {
+    isRendered = false,
+    variant = "outlined",
+    color = "primary",
+    label = "",
+    handleClick,
+    icon = <AddIcon />,
+  },
 }) => {
   return (
     <PageCard
@@ -22,8 +29,8 @@ const TablePageCard = ({
                   <button />
                 ) : (
                   <Button
-                    variant={"outlined"}
-                    color={"primary"}
+                    variant={variant}
+                    color={color}
                     size={"small"}
                     onClick={handleClick}
                     startIcon={icon}

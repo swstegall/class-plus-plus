@@ -12,6 +12,7 @@ const Content = () => {
             <Button
               aria-label="UploadFile"
               variant="contained"
+              color={"secondary"}
               endIcon={<FileUploadOutlinedIcon />}
               onClick={() => console.log("spawnUploadFileDialogue stub.")}
             >
@@ -22,6 +23,7 @@ const Content = () => {
             <Button
               aria-label="submit"
               variant="contained"
+              color={"secondary"}
               onClick={() => console.log("spawnSubmitAssignmentDialogue stub.")}
             >
               Submit Assignment

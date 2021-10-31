@@ -18,6 +18,7 @@ const Content = () => {
           <div className={"col d-flex justify-content-end"}>
             <Button
               variant={"contained"}
+              color={"secondary"}
               onClick={() => history.push("/submit_assignment")}
             >
               Submit Assignment

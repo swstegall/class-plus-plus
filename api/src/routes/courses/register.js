@@ -12,10 +12,11 @@ const register = async (req, res) => {
         CourseID: req.body.CourseID,
         UserID: tokenObject.UserID,
       });
-      const courses = await models.courseRegistration.findAll({
+      const courseRegistrations = await models.courseRegistration.findAll({
         where: { UserID: tokenObject.UserID },
+        include: [models.course],
       });
-      res.status(200).json(courses);
+      res.status(200).json(courseRegistrations);
     } else {
       res
         .status(400)

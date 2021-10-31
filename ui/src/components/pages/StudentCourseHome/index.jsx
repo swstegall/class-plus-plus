@@ -100,6 +100,9 @@ const StudentCourseHome = (props) => {
         <TablePageCard
           title={"Course Title"}
           table={{ columns, data, options }}
+          button={{
+            isRendered: false,
+          }}
         />
       )}
     </>

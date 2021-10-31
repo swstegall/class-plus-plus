@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
         field: "CourseID",
         type: DataTypes.STRING,
       },
-      Text: {
-        field: "Text",
+      Title: {
+        field: "Title",
         type: DataTypes.STRING,
       },
       Description: {

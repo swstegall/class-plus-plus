@@ -1,19 +1,15 @@
 const verifyToken = require("../../utilities/verifyToken");
 const models = require("../../models");
-const uuidv4 = require("../../utilities/uuidv4");
 
-const submit = async (req, res) => {
+const readSubmissions = async (req, res) => {
   try {
     const tokenObject = verifyToken(req.headers.authorization.substring(7));
     if (tokenObject.RoleID === 0) {
-      const id = uuidv4();
-      await models.assignmentSubmission.create({
-        ID: id,
-        UserID: tokenObject.UserID,
-        AssignmentID: req.body.AssignmentID,
-        File: req.body.File,
+      const assignmentSubmissions = await models.assignmentSubmission.findAll({
+        attributes: ["AssignmentID", "UserID"],
+        where: { UserID: tokenObject.UserID },
       });
-      res.status(200).json({ success: true });
+      res.status(200).json(assignmentSubmissions);
     } else {
       res
         .status(400)
@@ -24,4 +20,4 @@ const submit = async (req, res) => {
   }
 };
 
-module.exports = submit;
+module.exports = readSubmissions;

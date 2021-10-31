@@ -1,7 +1,8 @@
 import * as React from "react";
-import TablePageCard from "../individual/TablePageCard";
 import { useSelector } from "react-redux";
-import Button from "@mui/material/Button";
+import { useHistory } from "react-router-dom";
+import TablePageCard from "../../individual/TablePageCard";
+import ActionsButton from "./ActionsButton";
 
 const columns = [
   {
@@ -9,12 +10,8 @@ const columns = [
     label: "Name",
   },
   {
-    name: "title",
-    label: "Grade",
-  },
-  {
     name: "instructor",
-    label: "Instructor",
+    label: "Grade",
   },
   {
     name: "actions",
@@ -40,7 +37,7 @@ const options = {
 };
 
 const StudentCourseHome = (props) => {
-  return;
+  const history = useHistory();
   const Courses = {
     Loaded: true,
     Active: [
@@ -87,16 +84,23 @@ const StudentCourseHome = (props) => {
   const data = Courses.Active.map((course) => {
     return {
       courseName: course.Label,
-      title: course.Title,
       instructor: course.Description,
-      actions: <Button variant="contained">Home</Button>,
+      actions: (
+        <ActionsButton
+          sendToViewAssignment={() => history.push("/view_assignment")}
+          sendToSubmitAssignment={() => history.push("/submit_assignment")}
+        />
+      ),
     };
   });
 
   return (
     <>
       {render && (
-        <TablePageCard title={"Courses"} table={{ columns, data, options }} />
+        <TablePageCard
+          title={"Course Title"}
+          table={{ columns, data, options }}
+        />
       )}
     </>
   );

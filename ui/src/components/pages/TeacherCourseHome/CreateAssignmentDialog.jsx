@@ -12,36 +12,28 @@ import DateFnsUtils from "@date-io/date-fns";
 import validateFinalForm from "../../../utilities/validateFinalForm";
 import { AssignmentsActions } from "../../../redux/reducers/Assignments";
 
+const initialValues = {
+  title: null,
+  description: null,
+  dueDate: null,
+};
+
 const validationSchema = yup.object({
   title: yup.string().required().nullable(),
   description: yup.string().required().nullable(),
   dueDate: yup.date().required().nullable(),
 });
 
-const EditAssignmentDialog = (props) => {
+const CreateAssignmentDialog = (props) => {
   const User = useSelector((state) => state.User);
-  const AssignmentToEdit = useSelector(
-    (state) => state.Assignments
-  ).Active.find((a) => a.ID === props.assignmentID);
-  const render = AssignmentToEdit !== undefined && AssignmentToEdit !== null;
-  let initialValues = {};
-
-  if (render) {
-    initialValues = {
-      title: AssignmentToEdit.Title,
-      description: AssignmentToEdit.Description,
-      dueDate: AssignmentToEdit.DueDate,
-    };
-  }
 
   const onSubmit = async (values) => {
     props.dispatch(
-      AssignmentsActions.Update(User.Token, {
+      AssignmentsActions.Create(User.Token, {
         Title: values.title,
         Description: values.description,
         DueDate: values.dueDate,
         CourseID: props.courseID,
-        ID: AssignmentToEdit.ID,
       })
     );
   };
@@ -68,7 +60,7 @@ const EditAssignmentDialog = (props) => {
             aria-describedby="create-assignment-dialog-description"
           >
             <DialogTitle id="create-assignment-dialog-title">
-              Edit Assignment
+              Create Assignment
             </DialogTitle>
             <DialogContent>
               <div className={"row pt-2"}>
@@ -143,7 +135,7 @@ const EditAssignmentDialog = (props) => {
                         props.handleClose();
                       }}
                     >
-                      Update
+                      Create
                     </Button>
                   </>
                 )}
@@ -156,4 +148,4 @@ const EditAssignmentDialog = (props) => {
   );
 };
 
-export default EditAssignmentDialog;
+export default CreateAssignmentDialog;

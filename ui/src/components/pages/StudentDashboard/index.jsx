@@ -22,7 +22,7 @@ const columns = [
   },
   {
     name: "actions",
-    label: "Content",
+    label: "Actions",
     options: {
       filter: false,
       sort: false,

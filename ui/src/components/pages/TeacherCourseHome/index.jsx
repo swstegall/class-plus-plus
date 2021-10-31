@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { format } from "date-fns";
 import TablePageCard from "../../individual/TablePageCard";
-import EditButton from "./EditButton";
-import UploadButton from "./UploadButton";
-import SubmissionButton from "./SubmissionButton";
-import GradeButton from "./GradeButton";
 import { AssignmentsActions } from "../../../redux/reducers/Assignments";
 import { CoursesActions } from "../../../redux/reducers/Courses";
+import CreateAssignmentDialog from "./CreateAssignmentDialog";
+import ActionsButton from "./ActionsButton";
+import EditAssignmentDialog from "./EditAssignmentDialog";
 
 const columns = [
   {
@@ -18,22 +18,16 @@ const columns = [
     name: "dueDate",
     label: "Due Date",
   },
-  // {
-  //   name: "editAssignment",
-  //   label: "Edit Assignment",
-  // },
-  // {
-  //   name: "uploadAssignment",
-  //   label: "Upload Assignment",
-  // },
-  // {
-  //   name: "viewSubmissions",
-  //   label: "View Submissions",
-  // },
-  // {
-  //   name: "uploadGrade",
-  //   label: "ViewGrades",
-  // },
+  {
+    name: "actions",
+    label: "Actions",
+    options: {
+      filter: false,
+      sort: false,
+      download: false,
+      print: false,
+    },
+  },
 ];
 
 const options = {
@@ -43,6 +37,11 @@ const options = {
 };
 
 const TeacherCourseHome = (props) => {
+  const [editAssignmentDialogOpen, setEditAssignmentDialogOpen] =
+    React.useState(false);
+  const [assignmentID, setAssignmentID] = React.useState(null);
+  const [createAssignmentDialogOpen, setCreateAssignmentDialogOpen] =
+    React.useState(false);
   const { courseID } = useParams();
   const Assignments = useSelector((state) => state.Assignments);
   const User = useSelector((state) => state.User);
@@ -61,46 +60,48 @@ const TeacherCourseHome = (props) => {
   const data = Assignments.Active.map((assignment) => {
     return {
       title: assignment.Title,
-      dueDate: "-",
-      // editAssignment: (
-      //   <EditButton
-      //     spawnEditCourseDialog={() =>
-      //       console.log("spawnEditCourseDialog stub.")
-      //     }
-      //   />
-      // ),
-      // uploadAssignment: (
-      //   <UploadButton
-      //     spawnUploadAssignmentDialog={() =>
-      //       console.log("spawnUploadAssignmentDialog stub.")
-      //     }
-      //   />
-      // ),
-      // viewSubmissions: (
-      //   <SubmissionButton
-      //     spawnViewSubmissionsDialog={() =>
-      //       console.log("spawnViewSubmsissionsDialog stub.")
-      //     }
-      //   />
-      // ),
-      // uploadGrade: (
-      //   <GradeButton
-      //     spawnUploadGradeDialog={() =>
-      //       console.log("spawnUploadGradeDialog stub.")
-      //     }
-      //   />
-      // ),
+      dueDate: format(new Date(assignment.DueDate), "Pp"),
+      actions: (
+        <ActionsButton
+          sendToGradeSubmissions={() =>
+            console.log("send to grade submission stub.")
+          }
+          spawnEditAssignmentDialog={() => {
+            setAssignmentID(assignment.ID);
+            setEditAssignmentDialogOpen(true);
+          }}
+        />
+      ),
     };
   });
 
   return (
     <>
+      <EditAssignmentDialog
+        {...props}
+        dialogOpen={editAssignmentDialogOpen}
+        handleClose={() => {
+          setEditAssignmentDialogOpen(false);
+          setAssignmentID(null);
+        }}
+        courseID={courseID}
+        assignmentID={assignmentID}
+      />
+      <CreateAssignmentDialog
+        {...props}
+        dialogOpen={createAssignmentDialogOpen}
+        handleClose={() => setCreateAssignmentDialogOpen(false)}
+        courseID={courseID}
+      />
       {render && (
         <TablePageCard
           title={`${course.Label}: ${course.Title}`}
           table={{ columns, data, options }}
           button={{
-            isRendered: false,
+            isRendered: true,
+            label: "New Assignment",
+            color: "secondary",
+            handleClick: () => setCreateAssignmentDialogOpen(true),
           }}
         />
       )}

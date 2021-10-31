@@ -1,16 +1,9 @@
 use classPlusPlus;
 
 create table roles (
-  ID int not null,
-  Description varchar(255) not null,
-  constraint roles_Description_uindex unique (Description),
-  constraint roles_ID_uindex unique (ID)
+  ID int not null primary key,
+  Description varchar(255) not null
 );
-
-alter table
-  roles
-add
-  primary key (ID);
 
 insert into
   roles (ID, Description)

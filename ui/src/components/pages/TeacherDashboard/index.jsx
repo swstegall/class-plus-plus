@@ -3,11 +3,18 @@ import TablePageCard from "../../individual/TablePageCard";
 import { useSelector } from "react-redux";
 import { UsersActions } from "../../../redux/reducers/Users";
 import ActionsButton from "./ActionsButton";
+import { CoursesActions } from "../../../redux/reducers/Courses";
+import { CourseRegistrationsActions } from "../../../redux/reducers/CourseRegistrations";
+import EditCourseDialog from "./EditCourseDialog";
 
 const columns = [
   {
     name: "courseName",
-    label: "Course Name",
+    label: "Name",
+  },
+  {
+    name: "title",
+    label: "Title",
   },
   {
     name: "numStudents",
@@ -32,54 +39,39 @@ const options = {
 };
 
 const TeacherDashboard = (props) => {
-  const Courses = {
-    Loaded: true,
-    Active: [
-      {
-        ID: "test",
-        CourseName: "test",
-        Title: "test",
-        Description: "test",
-      },
-      {
-        ID: "test",
-        CourseName: "test",
-        Title: "test",
-        Description: "test",
-      },
-      {
-        ID: "test",
-        CourseName: "test",
-        Title: "test",
-        Description: "test",
-      },
-      {
-        ID: "test",
-        CourseName: "test",
-        Title: "test",
-        Description: "test",
-      },
-      {
-        ID: "test",
-        CourseName: "test",
-        Title: "test",
-        Description: "test",
-      },
-    ],
-  };
+  const [editCourseDialogOpen, setEditCourseDialogOpen] = React.useState(false);
+  const [courseID, setCourseID] = React.useState(false);
   const User = useSelector((state) => state.User);
+  const Courses = useSelector((state) => state.Courses);
+  const CourseRegistrations = useSelector((state) => state.CourseRegistrations);
+
+  React.useEffect(() => {
+    if (User.Loaded && !Courses.Loaded && !CourseRegistrations.Loaded) {
+      props.dispatch(CoursesActions.Cycle(User.Token));
+      props.dispatch(CourseRegistrationsActions.Cycle(User.Token));
+    }
+  }, [User, Courses.Loaded, props]);
+
   const render = User.Loaded && Courses.Loaded;
 
   const data = Courses.Active.map((course) => {
+    let numStudents = 0;
+    CourseRegistrations.Active.forEach((registration) => {
+      if (registration.CourseID === course.ID) {
+        ++numStudents;
+      }
+    });
     return {
-      courseName: course.CourseName,
-      numStudents: 9,
+      courseName: course.Label,
+      title: course.Title,
+      numStudents,
       actions: (
         <ActionsButton
           sendToCourseHome={() => console.log("sendToCourseHome stub.")}
-          spawnEditCourseDialog={() =>
-            console.log("spawnEditCourseDialog stub.")
-          }
+          spawnEditCourseDialog={() => {
+            setCourseID(course.ID);
+            setEditCourseDialogOpen(true);
+          }}
         />
       ),
     };
@@ -93,6 +85,15 @@ const TeacherDashboard = (props) => {
 
   return (
     <>
+      <EditCourseDialog
+        {...props}
+        courseID={courseID}
+        dialogOpen={editCourseDialogOpen}
+        handleClose={() => {
+          setEditCourseDialogOpen(false);
+          setCourseID(null);
+        }}
+      />
       {render && (
         <TablePageCard title={"Courses"} table={{ columns, data, options }} />
       )}

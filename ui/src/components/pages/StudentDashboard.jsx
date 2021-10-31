@@ -2,6 +2,8 @@ import React from "react";
 import TablePageCard from "../individual/TablePageCard";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
+import { CoursesActions } from "../../redux/reducers/Courses";
+import { TeachersActions } from "../../redux/reducers/Teachers";
 
 const columns = [
   {
@@ -9,8 +11,12 @@ const columns = [
     label: "Name",
   },
   {
-    name: "instructor",
-    label: "Instructor",
+    name: "title",
+    label: "Title",
+  },
+  {
+    name: "teacher",
+    label: "Teacher",
   },
   {
     name: "actions",
@@ -36,53 +42,30 @@ const options = {
 };
 
 const StudentDashboard = (props) => {
-  const Courses = {
-    Loaded: true,
-    Active: [
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-      {
-        ID: "test",
-        Label: "test",
-        Title: "test",
-        Description: "test",
-        CreatedByUserID: "test",
-      },
-    ],
-  };
   const User = useSelector((state) => state.User);
+  const Courses = useSelector((state) => state.Courses);
+  const Teachers = useSelector((state) => state.Teachers);
+  
+  React.useEffect(() => {
+    if (User.Loaded && !Courses.Loaded && !Teachers.Loaded) {
+      props.dispatch(CoursesActions.Cycle(User.Token));
+      props.dispatch(TeachersActions.Cycle(User.Token));
+    }
+  }, [User, Courses.Loaded, Teachers.Loaded, props]);
+
   const render = User.Loaded && Courses.Loaded;
 
   const data = Courses.Active.map((course) => {
+    const teacher = Teachers.Active.find(
+      (t) => t.ID === course.course.CreatedByUserID
+    );
     return {
-      courseName: course.Label,
-      instructor: course.Description,
+      courseName: course.course.Label,
+      title: course.course.Title,
+      teacher:
+        teacher !== undefined && teacher !== null
+          ? `${teacher.FirstName} ${teacher.LastName}`
+          : "-",
       actions: <Button variant="contained">Home</Button>,
     };
   });

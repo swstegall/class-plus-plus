@@ -6,6 +6,7 @@ import ActionsButton from "./ActionsButton";
 import { CoursesActions } from "../../../redux/reducers/Courses";
 import { CourseRegistrationsActions } from "../../../redux/reducers/CourseRegistrations";
 import EditCourseDialog from "./EditCourseDialog";
+import CreateCourseDialog from "./CreateCourseDialog";
 
 const columns = [
   {
@@ -39,6 +40,8 @@ const options = {
 };
 
 const TeacherDashboard = (props) => {
+  const [createCourseDialogOpen, setCreateCourseDialogOpen] =
+    React.useState(false);
   const [editCourseDialogOpen, setEditCourseDialogOpen] = React.useState(false);
   const [courseID, setCourseID] = React.useState(false);
   const User = useSelector((state) => state.User);
@@ -85,6 +88,11 @@ const TeacherDashboard = (props) => {
 
   return (
     <>
+      <CreateCourseDialog
+        {...props}
+        dialogOpen={createCourseDialogOpen}
+        handleClose={() => setCreateCourseDialogOpen(false)}
+      />
       <EditCourseDialog
         {...props}
         courseID={courseID}
@@ -95,7 +103,15 @@ const TeacherDashboard = (props) => {
         }}
       />
       {render && (
-        <TablePageCard title={"Courses"} table={{ columns, data, options }} />
+        <TablePageCard
+          title={"Courses"}
+          table={{ columns, data, options }}
+          button={{
+            isRendered: true,
+            label: "New Course",
+            handleClick: () => setCreateCourseDialogOpen(true),
+          }}
+        />
       )}
     </>
   );

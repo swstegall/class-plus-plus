@@ -1,10 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
-import { CoursesActions } from "../../redux/reducers/Courses";
-import { TeachersActions } from "../../redux/reducers/Teachers";
+import { CoursesActions } from "../../../redux/reducers/Courses";
+import { TeachersActions } from "../../../redux/reducers/Teachers";
 import { useHistory } from "react-router";
-import TablePageCard from "../individual/TablePageCard";
+import TablePageCard from "../../individual/TablePageCard";
+import CourseRegistrationDialog from "./CourseRegistrationDialog";
 
 const columns = [
   {
@@ -43,6 +44,7 @@ const options = {
 };
 
 const StudentDashboard = (props) => {
+  const [courseRegistrationDialogOpen, setCourseRegistrationDialogOpen] = React.useState(false);
   const history = useHistory();
   const User = useSelector((state) => state.User);
   const Courses = useSelector((state) => state.Courses);
@@ -82,6 +84,11 @@ const StudentDashboard = (props) => {
 
   return (
     <>
+      <CourseRegistrationDialog
+        {...props}
+        dialogOpen={courseRegistrationDialogOpen}
+        handleClose={() => setCourseRegistrationDialogOpen(false)}
+      />
       {render && (
         <TablePageCard
           title={"Courses"}
@@ -90,7 +97,7 @@ const StudentDashboard = (props) => {
             isRendered: true,
             color: "secondary",
             label: "Register for a Course",
-            handleClick: () => console.log("test"),
+            handleClick: () => setCourseRegistrationDialogOpen(true),
           }}
         />
       )}

@@ -27,15 +27,37 @@ const coursesListSlice = createSlice({
 
 const { cycle, reset } = coursesListSlice.actions;
 
-const Cycle = () => async (dispatch) => {
-  dispatch(reset());
+const Cycle = (token) => async (dispatch) => {
+  dispatch(AppActions.SetLoading(true));
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${C.localUrl}courses/all`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch(cycle(response.data));
+  } catch (error) {
+    localStorage.clear();
+    dispatch(UserActions.Reset());
+    dispatch(
+      NotificationActions.Open({
+        Message: "Session invalid. Login again.",
+        Severity: "error",
+      })
+    );
+  }
+  dispatch(AppActions.SetLoading(false));
 };
 
 const Reset = () => async (dispatch) => {
   dispatch(reset());
 };
 
-export const UsersActions = {
+export const CoursesListActions = {
   Cycle,
   Reset,
 };

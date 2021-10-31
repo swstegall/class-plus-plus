@@ -43,6 +43,7 @@ const options = {
 };
 
 const StudentDashboard = (props) => {
+  const history = useHistory();
   const User = useSelector((state) => state.User);
   const Courses = useSelector((state) => state.Courses);
   const Teachers = useSelector((state) => state.Teachers);
@@ -67,7 +68,14 @@ const StudentDashboard = (props) => {
         teacher !== undefined && teacher !== null
           ? `${teacher.FirstName} ${teacher.LastName}`
           : "-",
-      actions: <Button variant="contained">Home</Button>,
+      actions: (
+        <Button
+          variant="contained"
+          onClick={() => history.push("/course_home")}
+        >
+          Home
+        </Button>
+      ),
     };
   });
 

@@ -111,7 +111,13 @@ const AdminDashboard = (props) => {
         userID={userID}
       />
       {render && (
-        <TablePageCard title={"Users"} table={{ columns, data, options }} />
+        <TablePageCard
+          title={"Users"}
+          table={{ columns, data, options }}
+          button={{
+            isRendered: false,
+          }}
+        />
       )}
     </>
   );

@@ -45,7 +45,7 @@ const StudentDashboard = (props) => {
   const User = useSelector((state) => state.User);
   const Courses = useSelector((state) => state.Courses);
   const Teachers = useSelector((state) => state.Teachers);
-  
+
   React.useEffect(() => {
     if (User.Loaded && !Courses.Loaded && !Teachers.Loaded) {
       props.dispatch(CoursesActions.Cycle(User.Token));
@@ -73,7 +73,13 @@ const StudentDashboard = (props) => {
   return (
     <>
       {render && (
-        <TablePageCard title={"Courses"} table={{ columns, data, options }} />
+        <TablePageCard
+          title={"Courses"}
+          table={{ columns, data, options }}
+          button={{
+            isRendered: false,
+          }}
+        />
       )}
     </>
   );
